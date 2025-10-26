@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Sistema de Clubs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2d3561 0%, #5865a8 100%);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3561 0%, #5865a8 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 50px;
+            background: #f8f9fa;
+        }
+
+        .user-type-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 15px 30px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .type-btn:hover {
+            border-color: #4a5f8f;
+            color: #4a5f8f;
+            transform: translateY(-3px);
+        }
+
+        .type-btn.active {
+            background: linear-gradient(135deg, #4a5f8f 0%, #5865a8 100%);
+            color: white;
+            border-color: #4a5f8f;
+            box-shadow: 0 5px 20px rgba(74, 95, 143, 0.3);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 10px;
+            color: #2d3561;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a5f8f;
+            box-shadow: 0 0 0 3px rgba(74, 95, 143, 0.1);
+        }
+
+        .monitor-fields {
+            display: none;
+        }
+
+        .monitor-fields.active {
+            display: contents;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a5f8f 0%, #5865a8 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(74, 95, 143, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 95, 143, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #4a5f8f;
+            border: 2px solid #4a5f8f;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-link a {
+            color: #4a5f8f;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-link a:hover {
+            color: #2d3561;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .user-type-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Crear Cuenta</h1>
+            <p>Registra un nuevo usuario en el sistema</p>
+        </div>
+
+        <div class="form-container">
+            <div id="alertInfo" class="alert alert-info">
+                ℹ️ Los usuarios de OFICINA no requieren número de control, carrera ni semestre.
+            </div>
+            <div id="alertSuccess" class="alert alert-success"></div>
+            <div id="alertError" class="alert alert-error"></div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="user-type-selector">
+                    <button type="button" class="type-btn active" onclick="selectUserType('oficina', event)">
+                        👔 Usuario de Oficina
+                    </button>
+                    <button type="button" class="type-btn" onclick="selectUserType('monitor', event)">
+                        🎓 Monitor
+                    </button>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Campos comunes -->
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" id="nombre" placeholder="Ej: María" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Apellido Paterno *</label>
+                        <input type="text" id="apellidoP" placeholder="Ej: González" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Apellido Materno *</label>
+                        <input type="text" id="apellidoM" placeholder="Ej: López" required>
+                    </div>
+
+                    <!-- Campos solo para Monitores -->
+                    <div class="form-group monitor-fields" id="monitorFields">
+                        <label>Número de Control *</label>
+                        <input type="text" id="numeroControl" placeholder="Ej: 20240001">
+                    </div>
+
+                    <div class="form-group monitor-fields">
+                        <label>Carrera *</label>
+                        <select id="carrera">
+                            <option value="">Seleccionar...</option>
+                            <option value="1">Ingeniería en Sistemas Computacionales</option>
+                            <option value="2">Ingeniería Industrial</option>
+                            <option value="3">Ingeniería Mecánica</option>
+                            <option value="4">Ingeniería Electrónica</option>
+                            <option value="5">Ingeniería Química</option>
+                            <option value="6">Licenciatura en Administración</option>
+                            <option value="7">Ingeniería en Gestión Empresarial</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group monitor-fields">
+                        <label>Semestre *</label>
+                        <select id="semestre">
+                            <option value="">Seleccionar...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                        </select>
+                    </div>
+
+                    <!-- Campos de acceso -->
+                    <div class="form-group">
+                        <label>Usuario *</label>
+                        <input type="text" id="usuario" placeholder="Ej: mgonzalez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contraseña *</label>
+                        <input type="password" id="password" placeholder="Mínimo 8 caracteres" required minlength="8">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirmar Contraseña *</label>
+                        <input type="password" id="confirmPassword" placeholder="Repite la contraseña" required
+                            minlength="8">
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">✅ Crear Cuenta</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Limpiar</button>
+                </div>
+            </form>
+
+            <div class="back-link">
+                <a href="login.html">← Volver al inicio de sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedUserType = 'oficina';
+
+        function selectUserType(type, event) {
+            event.preventDefault();
+            selectedUserType = type;
+
+            // Actualizar botones
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Mostrar/ocultar campos de monitor
+            const monitorFields = document.querySelectorAll('.monitor-fields');
+            const alertInfo = document.getElementById('alertInfo');
+
+            if (type === 'monitor') {
+                monitorFields.forEach(field => field.classList.add('active'));
+                alertInfo.style.display = 'none';
+                // Hacer requeridos los campos de monitor
+                document.getElementById('numeroControl').required = true;
+                document.getElementById('carrera').required = true;
+                document.getElementById('semestre').required = true;
+            } else {
+                monitorFields.forEach(field => field.classList.remove('active'));
+                alertInfo.style.display = 'block';
+                // Remover requerimiento de campos de monitor
+                document.getElementById('numeroControl').required = false;
+                document.getElementById('carrera').required = false;
+                document.getElementById('semestre').required = false;
+            }
+        }
+
+        function showAlert(type, message) {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => alert.style.display = 'none');
+
+            const alertElement = document.getElementById('alert' + type.charAt(0).toUpperCase() + type.slice(1));
+            if (alertElement) {
+                alertElement.textContent = message;
+                alertElement.style.display = 'block';
+
+                setTimeout(() => {
+                    alertElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showAlert('error', '❌ Las contraseñas no coinciden');
+                return;
+            }
+
+            const nombre = document.getElementById('nombre').value;
+            const apellidoP = document.getElementById('apellidoP').value;
+            const apellidoM = document.getElementById('apellidoM').value;
+            const usuario = document.getElementById('usuario').value;
+            const numeroControl = document.getElementById('numeroControl').value;
+            const carrera = document.getElementById('carrera').value;
+            const semestre = document.getElementById('semestre').value;
+
+            const data = new URLSearchParams();
+            data.append('tipo_usuario', selectedUserType);
+            data.append('nombre', nombre);
+            data.append('apellidoP', apellidoP);
+            data.append('apellidoM', apellidoM);
+            data.append('usuario', usuario);
+            data.append('password', password);
+
+            if (selectedUserType === 'monitor') {
+                data.append('numeroControl', numeroControl);
+                data.append('carrera', carrera);
+                data.append('semestre', semestre);
+            }
+
+            fetch('../Backend/register.php', {
+                method: 'POST',
+                body: data
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        showAlert('success', '✅ ' + res.message);
+                        setTimeout(() => { resetForm(); }, 2000);
+                    } else {
+                        showAlert('error', '❌' + res.message);
+                    }
+                })
+                .catch(err => showAlert('error', '❌ Error de conexión al servidor'));
+        }
+
+        // Función para resetear el formulario
+        function resetForm() {
+            document.getElementById('registerForm').reset();
+            selectUserType('oficina', { preventDefault: () => { }, target: document.querySelector('.type-btn') });
+        }
+
+        // Inicializar
+        document.getElementById('alertInfo').style.display = 'block';
+    </script>
+</body>
+
+</html>
